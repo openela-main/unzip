@@ -1,0 +1,34 @@
+From 8f6be666289211661906922cdfe6ea5a08c5b458 Mon Sep 17 00:00:00 2001
+From: Jakub Martisko <jamartis@redhat.com>
+Date: Tue, 13 Nov 2018 09:57:43 +0100
+Subject: [PATCH] envargs.c: strcpy with overlapping strings
+
+---
+ envargs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/envargs.c b/envargs.c
+index f0a230d..daa3e47 100644
+--- a/envargs.c
++++ b/envargs.c
+@@ -31,6 +31,7 @@
+ #define __ENVARGS_C     /* identifies this source module */
+ #define UNZIP_INTERNAL
+ #include "unzip.h"
++#include <string.h>
+ 
+ #ifdef __EMX__          /* emx isspace() returns TRUE on extended ASCII !! */
+ #  define ISspace(c) ((c) & 0x80 ? 0 : isspace((unsigned)c))
+@@ -118,7 +119,8 @@ int envargs(Pargc, Pargv, envstr, envstr2)
+ 
+             /* remove escape characters */
+             while ((argstart = MBSCHR(argstart, '\\')) != (char *)NULL) {
+-                strcpy(argstart, argstart + 1);
++                //strcpy(argstart, argstart + 1);
++		memmove(argstart, argstart + 1,strlen(argstart + 1) + 1);
+                 if (*argstart)
+                     ++argstart;
+             }
+-- 
+2.14.5
+
