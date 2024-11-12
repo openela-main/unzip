@@ -7,7 +7,7 @@
 Summary: A utility for unpacking zip files
 Name: unzip
 Version: 6.0
-Release: 56%{?dist}
+Release: 57%{?dist}
 License: BSD
 Source: http://downloads.sourceforge.net/infozip/unzip60.tar.gz
 
@@ -73,6 +73,8 @@ Patch31: unzip-zipbomb-part5.patch
 Patch32: unzip-zipbomb-part6.patch
 Patch33: unzip-zipbomb-switch.patch
 
+Patch34: unzip-6.0-fix-warning-messages-on-big-files.patch
+
 URL: http://www.info-zip.org/UnZip.html
 BuildRequires: make
 BuildRequires:  bzip2-devel, gcc
@@ -124,6 +126,7 @@ a zip archive.
 %patch31 -p1
 %patch32 -p1
 %patch33 -p1
+%patch34 -p1
 
 %build
 # Use the C implementation of CRC instead of assembly (only on i386, other architectures use C by default)
@@ -147,6 +150,11 @@ make -f unix/Makefile prefix=$RPM_BUILD_ROOT%{_prefix} MANDIR=$RPM_BUILD_ROOT/%{
 %{_mandir}/*/*
 
 %changelog
+* Wed Jul 03 2024 Jakub Martisko <jamartis@redhat.com> - 6.0-57
+- Fix: Unzip Fails on Large Zip Files
+- Use the patch from Debian dealing with this
+Resolves: RHEL-45994
+
 * Wed Jan 26 2022 Jakub Martisko <jamartis@redhat.com> - 6.0-56
 - Use the C crc implementation instead of the asm (i686 only, other arches already use C)
 Related: rhbz#2045075
