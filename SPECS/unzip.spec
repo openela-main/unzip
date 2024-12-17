@@ -7,7 +7,7 @@
 Summary: A utility for unpacking zip files
 Name: unzip
 Version: 6.0
-Release: 46%{?dist}
+Release: 47%{?dist}
 License: BSD
 Group: Applications/Archiving
 Source: http://downloads.sourceforge.net/infozip/unzip60.tar.gz
@@ -76,6 +76,8 @@ Patch32: unzip-zipbomb-part5.patch
 Patch33: unzip-zipbomb-part6.patch
 
 Patch34: unzip-zipbomb-switch.patch
+
+Patch35: unzip-6.0-fix-warning-messages-on-big-files.patch
 URL: http://www.info-zip.org/UnZip.html
 BuildRequires:  bzip2-devel
 
@@ -129,6 +131,7 @@ a zip archive.
 %patch32 -p1
 %patch33 -p1
 %patch34 -p1
+%patch35 -p1
 
 %build
 # IZ_HAVE_UXUIDGID is needed for right functionality of unzip -X
@@ -149,6 +152,11 @@ make -f unix/Makefile prefix=$RPM_BUILD_ROOT%{_prefix} MANDIR=$RPM_BUILD_ROOT/%{
 %{_mandir}/*/*
 
 %changelog
+* Wed Jul 03 2024 Jakub Martisko <jamartis@redhat.com> - 6.0-47
+- Fix: Unzip Fails on Large Zip Files
+- Use the patch from Debian dealing with this
+Resolves: RHEL-45997
+
 * Thu Dec 16 2021 Jakub Martisko <jamartis@redhat.com> - 6.0-46
 - Add environment variable that disables the zipbomb detection
 - Resolves: rhbz#2020320
