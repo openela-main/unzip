@@ -7,7 +7,7 @@
 Summary: A utility for unpacking zip files
 Name: unzip
 Version: 6.0
-Release: 57%{?dist}
+Release: 58%{?dist}
 License: BSD
 Source: http://downloads.sourceforge.net/infozip/unzip60.tar.gz
 
@@ -150,6 +150,10 @@ make -f unix/Makefile prefix=$RPM_BUILD_ROOT%{_prefix} MANDIR=$RPM_BUILD_ROOT/%{
 %{_mandir}/*/*
 
 %changelog
+* Tue Sep 24 2024 Matteo Croce <teknoraver@meta.com> - 6.0-58
+- Fix obscure invalid memory access in zipinfo
+Resolves: RHEL-60054
+
 * Wed Jul 03 2024 Jakub Martisko <jamartis@redhat.com> - 6.0-57
 - Fix: Unzip Fails on Large Zip Files
 - Use the patch from Debian dealing with this
