@@ -7,7 +7,7 @@
 Summary: A utility for unpacking zip files
 Name: unzip
 Version: 6.0
-Release: 58%{?dist}
+Release: 59%{?dist}
 License: BSD
 Source: http://downloads.sourceforge.net/infozip/unzip60.tar.gz
 
@@ -75,6 +75,9 @@ Patch33: unzip-zipbomb-switch.patch
 
 Patch34: unzip-6.0-fix-warning-messages-on-big-files.patch
 
+#https://sources.debian.org/src/unzip/6.0-29/debian/patches/29-handle-windows-zip64-files.patch/
+Patch35: unzip-6.0-RHEL-86228.patch
+
 URL: http://www.info-zip.org/UnZip.html
 BuildRequires: make
 BuildRequires:  bzip2-devel, gcc
@@ -127,6 +130,7 @@ a zip archive.
 %patch32 -p1
 %patch33 -p1
 %patch34 -p1
+%patch35 -p1
 
 %build
 # Use the C implementation of CRC instead of assembly (only on i386, other architectures use C by default)
@@ -150,6 +154,10 @@ make -f unix/Makefile prefix=$RPM_BUILD_ROOT%{_prefix} MANDIR=$RPM_BUILD_ROOT/%{
 %{_mandir}/*/*
 
 %changelog
+* Mon Apr 07 2025 Jakub Martisko <jamartis@redhat.com> - 6.0-59
+- Allow decompression of some wrongly compressed files
+Resolves: RHEL-86228
+
 * Tue Sep 24 2024 Matteo Croce <teknoraver@meta.com> - 6.0-58
 - Fix obscure invalid memory access in zipinfo
 Resolves: RHEL-60054
