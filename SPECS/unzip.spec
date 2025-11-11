@@ -6,7 +6,7 @@
 Summary: A utility for unpacking zip files
 Name: unzip
 Version: 6.0
-Release: 68%{?dist}
+Release: 69%{?dist}
 License: Info-ZIP
 Source: http://downloads.sourceforge.net/infozip/unzip60.tar.gz
 
@@ -80,6 +80,9 @@ Patch36: unzip-6.0-fix-warning-messages-on-big-files.patch
 Patch37: unzip-zipbomb-part7.patch
 Patch38: unzip-6.0-sast.patch
 
+#https://sources.debian.org/src/unzip/6.0-29/debian/patches/29-handle-windows-zip64-files.patch/
+Patch39: unzip-6.0-RHEL-86228.patch
+
 URL: http://infozip.sourceforge.net
 BuildRequires: make
 BuildRequires:  bzip2-devel, gcc
@@ -136,6 +139,7 @@ a zip archive.
 %patch36 -p1
 %patch37 -p1
 %patch38 -p1
+%patch39 -p1
 
 %build
 # IZ_HAVE_UXUIDGID is needed for right functionality of unzip -X
@@ -154,6 +158,10 @@ make -f unix/Makefile prefix=$RPM_BUILD_ROOT%{_prefix} MANDIR=$RPM_BUILD_ROOT%{_
 %{_mandir}/*/*
 
 %changelog
+* Mon Apr 07 2025 Jakub Martisko <jamartis@redhat.com> - 6.0-69
+- Allow decompression of some wrongly compressed files
+Resolves: RHEL-86230
+
 * Tue Nov 26 2024 Jakub Martisko <jamartis@redhat.com> - 6.0-68
 - Fix a sast issue (overlapping strcopy)
 Resolves: RHEL-44659
