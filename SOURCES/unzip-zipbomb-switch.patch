@@ -140,14 +140,29 @@ index 878817d..3e58071 100644
          /* skip over data descriptor (harder than it sounds, due to signature
           * ambiguity)
           */
-@@ -2189,6 +2196,7 @@ static int extract_or_test_member(__G)    /* return PK-type error code */
-             shy += 8 - readbuf((char *)buf, 8); /* skip eight more for ZIP64 */
+@@ -2189,16 +2196,16 @@ static int extract_or_test_member(__G)    /* return PK-type error code */
+               ((G.lrec.csize & LOW) != SIG ||   /* if not SIG, have signature */
+                (ulen == SIG &&                  /* if not SIG, no signature */
+                 (G.pInfo->zip64 ? G.lrec.csize >> 32 : G.lrec.ucsize) != SIG
+-                                                /* if not SIG, have signature */
++                /* if not SIG, have signature */
+                 )))))
+-                   /* skip four more bytes to account for signature */
+-                   shy += 4 - readbuf((char *)buf, 4);
++          /* skip four more bytes to account for signature */
++          shy += 4 - readbuf((char *)buf, 4);
+         if (G.pInfo->zip64)
+-            shy += 8 - readbuf((char *)buf, 8); /* skip eight more for ZIP64 */
++          shy += 8 - readbuf((char *)buf, 8); /* skip eight more for ZIP64 */
          if (shy)
-             error = PK_ERR;
+-            error = PK_ERR;
++          error = PK_ERR;
 +      }
      }
- 
+-
      return error;
+ 
+ } /* end function extract_or_test_member() */
 diff --git a/unzip.c b/unzip.c
 index 8dbfc95..abb3644 100644
 --- a/unzip.c
